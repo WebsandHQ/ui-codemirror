@@ -82,19 +82,12 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
   function configOptionsWatcher(codemirrot, uiCodemirrorAttr, scope) {
     if (!uiCodemirrorAttr) { return; }
 
-    var codemirrorDefaultsKeys = Object.keys(window.CodeMirror.defaults);
     scope.$watch(uiCodemirrorAttr, updateOptions, true);
+
     function updateOptions(newValues, oldValue) {
       if (!angular.isObject(newValues)) { return; }
-      codemirrorDefaultsKeys.forEach(function(key) {
-        if (newValues.hasOwnProperty(key)) {
-
-          if (oldValue && newValues[key] === oldValue[key]) {
-            return;
-          }
-
-          codemirrot.setOption(key, newValues[key]);
-        }
+      angular.forEach(newValues, function(value, key) {
+        codemirrot.setOption(key, value);
       });
     }
   }
@@ -148,3 +141,4 @@ function uiCodemirrorDirective($timeout, uiCodemirrorConfig) {
   }
 
 }
+uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
